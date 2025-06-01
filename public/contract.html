@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Luggage Space Sharing Agreement - LuggageShare</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .contract-container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .contract-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #1976d2;
+        }
+
+        .contract-header h1 {
+            color: #1976d2;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .contract-content {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        .contract-section {
+            margin-bottom: 2rem;
+        }
+
+        .contract-section h2 {
+            color: #1976d2;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .contract-section p {
+            margin-bottom: 1rem;
+        }
+
+        .signature-section {
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid #ddd;
+        }
+
+        .signature-box {
+            margin: 2rem 0;
+            padding: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+
+        .signature-box h3 {
+            color: #1976d2;
+            margin-bottom: 1rem;
+        }
+
+        .signature-field {
+            margin: 1rem 0;
+        }
+
+        .signature-field label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .signature-field input {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .agreement-checkbox {
+            margin: 2rem 0;
+        }
+
+        .agreement-checkbox label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 500;
+        }
+
+        .submit-button {
+            background: #1976d2;
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .submit-button:hover {
+            background: #1565c0;
+        }
+    </style>
+</head>
+<body>
+    <div class="contract-container">
+        <div class="contract-header">
+            <h1>Luggage Space Sharing Agreement</h1>
+            <p>This agreement is made between the Space Provider and the Luggage Owner</p>
+        </div>
+
+        <div class="contract-content">
+            <div class="contract-section">
+                <h2>1. Definitions</h2>
+                <p>"Space Provider" refers to the individual offering their luggage space.</p>
+                <p>"Luggage Owner" refers to the individual whose luggage will be transported.</p>
+                <p>"Luggage" refers to the items being transported in the Space Provider's luggage space.</p>
+            </div>
+
+            <div class="contract-section">
+                <h2>2. Agreement Terms</h2>
+                <p>2.1 The Space Provider agrees to transport the Luggage Owner's items in their available luggage space.</p>
+                <p>2.2 The Luggage Owner agrees to pay the agreed-upon fee for the luggage space.</p>
+                <p>2.3 Both parties agree to comply with all applicable laws and regulations regarding luggage transportation.</p>
+            </div>
+
+            <div class="contract-section">
+                <h2>3. Liability and Responsibility</h2>
+                <p>3.1 The Luggage Owner acknowledges and agrees that they are solely responsible for:</p>
+                <ul>
+                    <li>The legality of all items being transported</li>
+                    <li>Ensuring all items comply with airline and customs regulations</li>
+                    <li>Any customs duties, taxes, or fees that may be incurred</li>
+                    <li>Any legal consequences arising from the contents of their luggage</li>
+                </ul>
+                <p>3.2 The Space Provider shall not be held liable for:</p>
+                <ul>
+                    <li>Any illegal items found in the luggage</li>
+                    <li>Customs seizures or delays</li>
+                    <li>Any legal consequences arising from the contents of the luggage</li>
+                </ul>
+            </div>
+
+            <div class="contract-section">
+                <h2>4. Luggage Contents Declaration</h2>
+                <p>4.1 The Luggage Owner must declare all contents of their luggage to the Space Provider.</p>
+                <p>4.2 The Luggage Owner must ensure all items are legal and comply with airline regulations.</p>
+                <p>4.3 The Space Provider reserves the right to refuse transportation of any items they deem suspicious or potentially illegal.</p>
+            </div>
+
+            <div class="contract-section">
+                <h2>5. Payment Terms</h2>
+                <p>5.1 The agreed payment amount must be made through the platform's secure payment system.</p>
+                <p>5.2 Payment will be released to the Space Provider upon successful delivery and confirmation.</p>
+            </div>
+
+            <div class="contract-section">
+                <h2>6. Cancellation Policy</h2>
+                <p>6.1 Either party may cancel the agreement up to 24 hours before the scheduled flight.</p>
+                <p>6.2 Cancellation fees may apply as per the platform's standard policy.</p>
+            </div>
+
+            <div class="signature-section">
+                <div class="signature-box">
+                    <h3>Space Provider's Signature</h3>
+                    <div class="signature-field">
+                        <label for="provider-name">Full Name:</label>
+                        <input type="text" id="provider-name" required>
+                    </div>
+                    <div class="signature-field">
+                        <label for="provider-date">Date:</label>
+                        <input type="date" id="provider-date" required>
+                    </div>
+                </div>
+
+                <div class="signature-box">
+                    <h3>Luggage Owner's Signature</h3>
+                    <div class="signature-field">
+                        <label for="owner-name">Full Name:</label>
+                        <input type="text" id="owner-name" required>
+                    </div>
+                    <div class="signature-field">
+                        <label for="owner-date">Date:</label>
+                        <input type="date" id="owner-date" required>
+                    </div>
+                </div>
+
+                <div class="agreement-checkbox">
+                    <label>
+                        <input type="checkbox" required>
+                        I have read and agree to all terms and conditions of this agreement. I understand that I am solely responsible for the legality of my luggage contents and any legal consequences that may arise.
+                    </label>
+                </div>
+
+                <button class="submit-button" onclick="submitContract()">Submit Agreement</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function submitContract() {
+            // Validate form
+            const providerName = document.getElementById('provider-name').value;
+            const providerDate = document.getElementById('provider-date').value;
+            const ownerName = document.getElementById('owner-name').value;
+            const ownerDate = document.getElementById('owner-date').value;
+            const agreementCheckbox = document.querySelector('.agreement-checkbox input').checked;
+
+            if (!providerName || !providerDate || !ownerName || !ownerDate || !agreementCheckbox) {
+                alert('Please fill in all required fields and agree to the terms.');
+                return;
+            }
+
+            // Here you would typically send the contract data to your backend
+            alert('Contract submitted successfully!');
+            // Redirect to the next page or show confirmation
+        }
+    </script>
+</body>
+</html> 

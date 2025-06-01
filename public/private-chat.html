@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Private Chat - LuggageShare</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body {
+      background: linear-gradient(135deg, #e3f0ff 0%, #f8fbff 100%);
+      min-height: 100vh;
+      margin: 0;
+      font-family: 'Segoe UI', Arial, sans-serif;
+    }
+    .container {
+      max-width: 800px;
+      margin: 2.5rem auto;
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 8px 32px rgba(25, 118, 210, 0.10);
+      padding: 2rem 2rem 1.5rem 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+    .chat-header {
+      font-size: 2rem;
+      color: #1976d2;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+    .chat-info {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+    .chat-user-avatar {
+      width: 48px;
+      height: 48px;
+      background: #1976d2;
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      font-weight: bold;
+      margin-right: 1rem;
+    }
+    .chat-user-info {
+      flex: 1;
+    }
+    .chat-user-name {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #333;
+      text-decoration: none;
+      display: inline-block;
+      position: relative;
+    }
+    .chat-user-name:hover {
+      color: #1976d2;
+    }
+    .chat-user-name:after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 2px;
+      bottom: -2px;
+      left: 0;
+      background-color: #1976d2;
+      transform: scaleX(0);
+      transition: transform 0.2s ease-out;
+    }
+    .chat-user-name:hover:after {
+      transform: scaleX(1);
+    }
+    .chat-ad-details {
+      color: #666;
+      font-size: 0.9rem;
+      margin-top: 0.2rem;
+    }
+    .back-link {
+      color: #1976d2;
+      text-decoration: none;
+      font-size: 1rem;
+      margin-bottom: 1.5rem;
+      display: inline-block;
+      transition: color 0.2s;
+    }
+    .back-link:hover {
+      color: #1565c0;
+      text-decoration: underline;
+    }
+    .chat-box {
+      background: #f8f9fa;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(25, 118, 210, 0.06);
+      padding: 1.5rem 1rem;
+      min-height: 250px;
+      max-height: 350px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+    .chat-row {
+      display: flex;
+      align-items: flex-end;
+      margin-bottom: 0.5rem;
+    }
+    .chat-row.self {
+      flex-direction: row-reverse;
+    }
+    .chat-avatar {
+      width: 36px;
+      height: 36px;
+      background: #1976d2;
+      color: #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 1.1rem;
+      margin: 0 0.5rem;
+      box-shadow: 0 2px 8px rgba(25, 118, 210, 0.10);
+    }
+    .chat-bubble {
+      background: #e3f2fd;
+      color: #1976d2;
+      border-radius: 30px 30px 30px 10px;
+      padding: 0.75rem 1rem;
+      max-width: 60%;
+      position: relative;
+      font-size: 1rem;
+      box-shadow: 0 2px 8px rgba(25, 118, 210, 0.06);
+      word-break: break-word;
+    }
+    .chat-row.self .chat-bubble {
+      background: #1976d2;
+      color: #fff;
+      border-radius: 16px 16px 4px 16px;
+    }
+    .chat-timestamp {
+      font-size: 0.8rem;
+      color: #888;
+      margin-top: 0.2rem;
+      text-align: right;
+    }
+    .agreement-message {
+      background: #fffde7;
+      color: #bfa600;
+      border: 1px solid #ffe082;
+      padding: 1rem;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+      max-width: 90%;
+      font-size: 1rem;
+      box-shadow: 0 2px 8px rgba(191, 166, 0, 0.08);
+    }
+    .agreement-actions {
+      margin-top: 1rem;
+      display: flex;
+      gap: 1rem;
+    }
+    .agreement-status {
+      margin-top: 0.5rem;
+      font-weight: bold;
+    }
+    .send-agreement-btn {
+      background: #bfa600;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 0.5rem 1.2rem;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.3s;
+      margin-bottom: 1rem;
+    }
+    .send-agreement-btn:hover {
+      background: #ffe082;
+      color: #bfa600;
+    }
+    .chat-form-row {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+      margin-top: 0.5rem;
+    }
+    #chatInput {
+      flex: 1;
+      padding: 0.75rem;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+      font-size: 1rem;
+      background: #f8f9fa;
+    }
+    .btn {
+      background: #1976d2;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 0.75rem 1.5rem;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .btn:hover {
+      background: #1565c0;
+    }
+    /* Modal styles */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      background: rgba(0,0,0,0.4);
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+    .modal-content {
+      background: white;
+      border-radius: 12px;
+      max-width: 500px;
+      width: 95%;
+      padding: 2rem;
+      box-shadow: 0 4px 24px rgba(25, 118, 210, 0.15);
+      position: relative;
+      max-height: 80vh;
+      overflow-y: auto;
+    }
+    .modal-close {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      color: #1976d2;
+      cursor: pointer;
+    }
+    .agreement-title {
+      color: #1976d2;
+      font-size: 1.3rem;
+      margin-bottom: 1rem;
+    }
+    .agreement-section {
+      margin-bottom: 1rem;
+    }
+    .agreement-section strong {
+      color: #1976d2;
+    }
+    @media (max-width: 700px) {
+      .container {
+        max-width: 98vw;
+        padding: 1rem 0.5rem 1rem 0.5rem;
+      }
+      .chat-header {
+        font-size: 1.3rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-brand">LuggageShare</div>
+    <div class="nav-links">
+      <a href="dashboard.html">Dashboard</a>
+      <a href="post-ad.html">Post Ad</a>
+      <a href="available-ads.html">Available Ads</a>
+      <a href="my-ads.html">My Ads</a>
+      <a href="messages.html">Messages</a>
+      <a href="profile.html">Profile</a>
+      <a href="#" id="logout">Logout</a>
+    </div>
+  </nav>
+  <div class="container">
+    <div class="chat-header">Private Chat</div>
+    <div class="chat-info">
+      <div class="chat-user-avatar" id="chat-user-avatar">?</div>
+      <div class="chat-user-info">
+        <a href="#" id="chat-user-name" class="chat-user-name">Loading user...</a>
+        <div id="chat-ad-details" class="chat-ad-details">Loading details...</div>
+      </div>
+    </div>
+    <!-- <a href="dashboard.html" class="back-link">&larr; Back to Dashboard</a> -->
+    
+    <div id="chatMessages" class="chat-box"></div>
+    <div id="agreement-section"></div>
+    <form id="chatForm">
+      <div class="chat-form-row">
+        <input type="text" id="chatInput" placeholder="Type your message..." required>
+        <button type="submit" class="btn">Send</button>
+      </div>
+    </form>
+    <button id="doneBtn" class="btn" style="margin-top:1rem;">Done</button>
+    <button id="rateUserBtn" class="btn" style="margin-top:1rem; display:none;">Rate this user</button>
+  </div>
+
+  <!-- Agreement Modal -->
+  <div id="agreement-modal" class="modal">
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeAgreementModal()">&times;</button>
+      <div class="agreement-title">Luggage Transfer Agreement</div>
+      <div class="agreement-section"><strong>Sender:</strong> <span id="agreement-sender"></span></div>
+      <div class="agreement-section"><strong>Carrier:</strong> <span id="agreement-carrier"></span></div>
+      <div class="agreement-section"><strong>Agreement Terms:</strong></div>
+      <div class="agreement-section">
+        <strong>Luggage Details:</strong> The Sender agrees to provide the Carrier with specified luggage items, which the Carrier agrees to transport under the agreed conditions.
+      </div>
+      <div class="agreement-section">
+        <strong>Compensation:</strong> The Sender shall compensate the Carrier for the luggage transport service as agreed upon through the LuggageShare platform.
+      </div>
+      <div class="agreement-section">
+        <strong>Liability:</strong> The Carrier is responsible for the luggage only while it is in their possession. Luggage is to be returned in the same condition as received.<br>
+        The Sender confirms that the contents of the luggage comply with all airline regulations and do not contain prohibited items.<br>
+        If any illegal items are found in the luggage, the Sender (original owner of the luggage) shall bear full responsibility, and the Carrier (handler) shall not be held liable.
+      </div>
+      <div class="agreement-section">
+        <strong>Confidentiality:</strong> Both parties agree to keep personal information, including contact details and flight information, confidential and use it solely for the purpose of fulfilling this agreement.
+      </div>
+      <div class="agreement-section">
+        <strong>Dispute Resolution:</strong> Any disputes arising from this agreement shall be resolved through the LuggageShare platform's mediation process.
+      </div>
+      <div class="agreement-section">
+        <strong>Termination:</strong> This Agreement is binding once the luggage is transferred to the Carrier and shall remain in effect until the luggage is delivered to the Sender's designated recipient.
+      </div>
+      <div class="agreement-section">
+        By proceeding with the luggage transfer, both parties acknowledge and agree to the terms outlined above.
+      </div>
+      <div class="agreement-section">
+        <strong>Effective Date:</strong> Upon confirmation of luggage transfer through the LuggageShare platform.
+      </div>
+      <div class="agreement-section" id="agreement-modal-actions">
+        <button class="btn" id="agreeAndSendBtn">Agree and Send</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Survey Modal -->
+  <div id="survey-choice-modal" class="modal">
+    <div class="modal-content" style="max-width:400px;">
+      <h3>Would you like to participate in a quick survey about your experience?</h3>
+      <div style="margin-top:2rem; display:flex; gap:1rem; justify-content:center;">
+        <button id="surveyYesBtn" class="btn">Yes, take survey</button>
+        <button id="surveyNoBtn" class="btn button-secondary">No, go to dashboard</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Rating Modal -->
+  <div id="rating-modal" class="modal">
+    <div class="modal-content" style="max-width:400px;">
+      <h3>Rate this user</h3>
+      <div id="star-rating" style="font-size:2rem; margin:1rem 0; text-align:center;">
+        <span class="star" data-value="1">&#9734;</span>
+        <span class="star" data-value="2">&#9734;</span>
+        <span class="star" data-value="3">&#9734;</span>
+        <span class="star" data-value="4">&#9734;</span>
+        <span class="star" data-value="5">&#9734;</span>
+      </div>
+      <textarea id="rating-feedback" placeholder="Write feedback (optional)" style="width:100%;border-radius:8px;border:1px solid #ddd;padding:0.75rem;"></textarea>
+      <div style="margin-top:1rem; display:flex; gap:1rem; justify-content:center;">
+        <button id="submitRatingBtn" class="btn">Submit</button>
+        <button id="cancelRatingBtn" class="btn button-secondary">Cancel</button>
+      </div>
+      <div id="rating-message" style="margin-top:1rem;text-align:center;"></div>
+    </div>
+  </div>
+
+  <script src="private_chat.js"></script>
+  <script>
+    // Logout handler (same as other pages)
+    document.getElementById('logout').addEventListener('click', function(e) {
+      e.preventDefault();
+      localStorage.removeItem('token');
+      window.location.href = 'login.html';
+    });
+
+    // Done button logic
+    document.getElementById('doneBtn').addEventListener('click', function() {
+      document.getElementById('survey-choice-modal').style.display = 'flex';
+    });
+    document.getElementById('surveyYesBtn').addEventListener('click', function() {
+      document.getElementById('survey-choice-modal').style.display = 'none';
+      window.location.href = 'survey.html';
+    });
+    document.getElementById('surveyNoBtn').addEventListener('click', function() {
+      document.getElementById('survey-choice-modal').style.display = 'none';
+      window.location.href = 'dashboard.html';
+    });
+
+    // Rating modal logic
+    let selectedRating = 0;
+    const stars = document.querySelectorAll('#star-rating .star');
+    stars.forEach(star => {
+      star.addEventListener('mouseover', function() {
+        highlightStars(this.dataset.value);
+      });
+      star.addEventListener('mouseout', function() {
+        highlightStars(selectedRating);
+      });
+      star.addEventListener('click', function() {
+        selectedRating = this.dataset.value;
+        highlightStars(selectedRating);
+      });
+    });
+    function highlightStars(rating) {
+      stars.forEach(star => {
+        star.innerHTML = star.dataset.value <= rating ? '&#9733;' : '&#9734;';
+      });
+    }
+    document.getElementById('rateUserBtn').addEventListener('click', function() {
+      document.getElementById('rating-modal').style.display = 'flex';
+    });
+    document.getElementById('cancelRatingBtn').addEventListener('click', function() {
+      document.getElementById('rating-modal').style.display = 'none';
+      document.getElementById('rating-message').textContent = '';
+      selectedRating = 0;
+      highlightStars(0);
+      document.getElementById('rating-feedback').value = '';
+    });
+    document.getElementById('submitRatingBtn').addEventListener('click', async function() {
+      if (!selectedRating) {
+        document.getElementById('rating-message').textContent = 'Please select a rating.';
+        return;
+      }
+      const feedback = document.getElementById('rating-feedback').value.trim();
+      // You need to get the other user's ID and the chatId (adId or message thread ID)
+      const urlParams = new URLSearchParams(window.location.search);
+      const adId = urlParams.get('adId');
+      const userId = urlParams.get('userId');
+      try {
+        const res = await fetch('/api/ratings', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+          },
+          body: JSON.stringify({
+            rateeId: userId,
+            chatId: adId,
+            rating: selectedRating,
+            comment: feedback
+          })
+        });
+        const data = await res.json();
+        if (res.ok) {
+          document.getElementById('rating-message').textContent = 'Thank you for your feedback!';
+          setTimeout(() => {
+            document.getElementById('rating-modal').style.display = 'none';
+            document.getElementById('rateUserBtn').style.display = 'none';
+          }, 1200);
+        } else {
+          document.getElementById('rating-message').textContent = data.error || 'Failed to submit rating.';
+        }
+      } catch (err) {
+        document.getElementById('rating-message').textContent = 'Failed to submit rating.';
+      }
+    });
+    // Show rate button if not already rated (fetch on load)
+    window.addEventListener('DOMContentLoaded', async function() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const adId = urlParams.get('adId');
+      const userId = urlParams.get('userId');
+      if (!adId || !userId) return;
+
+      // First get current user's ID and store it
+      try {
+        const token = localStorage.getItem('token');
+        
+        // Load user profile info
+        const userRes = await fetch(`/api/user/${userId}/contact`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        
+        if (userRes.ok) {
+          const userData = await userRes.json();
+          document.getElementById('chat-user-name').textContent = userData.name || 'User';
+          document.getElementById('chat-user-name').href = `view-profile.html?userId=${userId}`;
+          
+          // Set avatar initial
+          if (userData.name) {
+            document.getElementById('chat-user-avatar').textContent = userData.name.charAt(0).toUpperCase();
+          }
+          
+          // Load ad details
+          const adRes = await fetch(`/api/ads/${adId}`, {
+            headers: { 'Authorization': `Bearer ${token}` }
+          });
+          
+          if (adRes.ok) {
+            const adData = await adRes.json();
+            document.getElementById('chat-ad-details').textContent = `${adData.flightDetails || 'Flight ' + adData.flightNumber} - ${new Date(adData.flightDate).toLocaleDateString()}`;
+          }
+        }
+        
+        const profileRes = await fetch('/api/profile', {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        
+        if (profileRes.ok) {
+          const userData = await profileRes.json();
+          localStorage.setItem('userId', userData._id); // Store current user ID
+          const myId = userData._id;
+          
+          // Now check if already rated
+          const res = await fetch(`/api/users/${userId}/ratings`, { 
+            headers: { 'Authorization': `Bearer ${token}` } 
+          });
+          
+          if (res.ok) {
+            const ratings = await res.json();
+            const alreadyRated = ratings.some(r => r.rater && r.rater._id === myId && r.chatId === adId);
+            
+            if (!alreadyRated) {
+              document.getElementById('rateUserBtn').style.display = 'inline-block';
+            }
+          } else {
+            // If there's an error fetching ratings, still show the button
+            document.getElementById('rateUserBtn').style.display = 'inline-block';
+          }
+        }
+      } catch (e) {
+        console.error("Error checking rating status:", e);
+        // If there's an error, default to showing the button
+        document.getElementById('rateUserBtn').style.display = 'inline-block';
+      }
+    });
+  </script>
+</body>
+</html> 

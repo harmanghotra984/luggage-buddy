@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Luggage Buddy</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .about-container { max-width: 900px; margin: 3rem auto; background: #fff; border-radius: 16px; box-shadow: 0 8px 32px rgba(25, 118, 210, 0.10); padding: 2.5rem; }
+    .about-header { font-size: 2.2rem; color: #1976d2; font-weight: 700; margin-bottom: 1.5rem; text-align: center; }
+    .about-section { margin-bottom: 2rem; }
+    .about-section h2 { color: #1976d2; font-size: 1.3rem; margin-bottom: 0.5rem; }
+    .about-section ul { margin: 0.5rem 0 0 1.5rem; }
+    .about-section p, .about-section li { color: #333; }
+  </style>
+</head>
+<body>
+  <div class="about-container">
+    <div class="about-header">About Luggage Buddy</div>
+    <div class="about-section">
+      <h2>Introduction:</h2>
+      <p>Luggage Buddy is an innovative web-based platform designed to revolutionize the way air travelers manage their luggage. The platform connects passengers with excess baggage capacity to those in need of extra luggage space, creating a mutually beneficial arrangement that reduces costs and simplifies travel logistics. By integrating user authentication, a luggage advertisement system, private chat for negotiation, and legally binding agreements, Luggage Buddy ensures that every interaction is secure, efficient, and hassle-free.</p>
+    </div>
+    <div class="about-section">
+      <h2>Background and Motivation:</h2>
+      <p>Air travel is often associated with hefty baggage fees, cumbersome luggage restrictions, and last-minute logistical challenges. Many travelers find themselves either burdened with excess luggage that incurs additional fees or struggling to fit all their belongings within limited baggage allowances. On the other hand, some passengers travel with underfilled bags, effectively wasting valuable luggage space.</p>
+      <p>Luggage Buddy addresses these challenges by providing a structured platform where travelers can post ads for available luggage space or request space based on their specific needs. The objective is to turn underutilized luggage capacity into a shared resource, reducing baggage fees for travelers and promoting a sense of community among passengers on the same flight. Additionally, the platform introduces a contract module to formalize agreements, ensuring accountability and transparency between the involved parties.</p>
+    </div>
+    <div class="about-section">
+      <h2>Core Features:</h2>
+      <ul>
+        <li><strong>User Authentication and Profile Management:</strong> Luggage Buddy uses secure authentication mechanisms, including JWT (JSON Web Token) and bcrypt hashing, to manage user data and protect personal information. Every user is required to create an account, providing basic information such as name, email, and a password.</li>
+        <li><strong>Luggage Advertisement System:</strong> Users can post ads specifying available luggage space, including details such as flight number, destination, weight limit, and any specific conditions. These ads are accessible to other users traveling on the same flight, enabling easy connections and negotiations.</li>
+        <li><strong>Private Chat Module:</strong> Once an ad is approved, the involved parties gain access to a private chat room. All communications are securely stored in MongoDB, ensuring data integrity and accessibility. This feature allows users to negotiate terms, confirm luggage details, and coordinate drop-off and pick-up arrangements.</li>
+        <li><strong>Contract Agreement Module:</strong> To formalize the arrangement, Luggage Buddy includes a legal agreement module. The agreement outlines responsibilities, luggage details, and liability clauses, protecting both the luggage owner and the handler. A specific clause clearly states that in the event of any illegal items being found in the luggage, the owner will bear full responsibility.</li>
+      </ul>
+    </div>
+    <div class="about-section">
+      <h2>Target Audience:</h2>
+      <p>Luggage Buddy is designed for air travelers, particularly those traveling internationally or on long-haul flights where baggage fees are notably high. It targets two primary user groups:</p>
+      <ul>
+        <li><strong>Luggage Owners:</strong> Passengers with excess luggage who need to secure additional baggage space.</li>
+        <li><strong>Luggage Handlers:</strong> Passengers with underfilled luggage who are willing to transport additional items in exchange for compensation or other agreed-upon terms.</li>
+      </ul>
+    </div>
+    <div class="about-section">
+      <h2>Development Approach and Technologies:</h2>
+      <p>Luggage Buddy is built using the MERN stack — MongoDB, Express.js, React.js, and Node.js — a powerful combination that enables rapid development, scalability, and real-time data handling. Key technologies and frameworks include:</p>
+      <ul>
+        <li><strong>Backend:</strong> Node.js, Express.js, JWT for authentication, bcrypt for password hashing, and MongoDB for database storage.</li>
+        <li><strong>Frontend:</strong> HTML, CSS, and JavaScript for core pages, with future plans to integrate React.js for enhanced interactivity.</li>
+        <li><strong>Security:</strong> All sensitive data, including passwords and chat messages, are securely encrypted and stored. JWT ensures session integrity, preventing unauthorized access.</li>
+      </ul>
+    </div>
+    <div class="about-section">
+      <h2>Social and Environmental Impact:</h2>
+      <p>Beyond the immediate financial benefits for users, Luggage Buddy contributes to a broader environmental and social impact. By optimizing luggage space, the platform reduces the need for additional cargo space, potentially lowering the carbon footprint associated with excess baggage. Additionally, it fosters a sense of community and cooperation among passengers, promoting shared resources and sustainable travel practices.</p>
+    </div>
+    <div class="about-section">
+      <h2>Conclusion:</h2>
+      <p>Luggage Buddy is more than just a luggage-sharing platform — it's a solution that addresses a critical gap in air travel logistics. By connecting travelers with excess luggage capacity to those in need, it reduces baggage fees, minimizes travel stress, and promotes responsible, community-driven resource sharing. With robust security measures, a comprehensive contract module, and intuitive user interfaces, Luggage Buddy is poised to redefine how passengers manage and share luggage space.</p>
+    </div>
+  </div>
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3>About</h3>
+        <ul>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="how-it-works.html">How It Works</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h3>Support</h3>
+        <ul>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="faq.html">FAQ</a></li>
+          <li><a href="privacy.html">Privacy Policy</a></li>
+          <li><a href="terms.html">Terms & Conditions</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h3>Connect</h3>
+        <ul>
+          <li><a href="#">Facebook</a></li>
+          <li><a href="#">Twitter</a></li>
+          <li><a href="#">Instagram</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="copyright">
+      &copy; 2024 LuggageShare. All rights reserved.
+    </div>
+  </footer>
+</body>
+</html> 

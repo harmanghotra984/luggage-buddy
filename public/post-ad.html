@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Post Ad - LuggageShare</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    /* Navigation Styles */
+    .nav {
+      background: #1976d2;
+      color: white;
+      padding: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 1.5em;
+    }
+    .nav-logo {
+      width: 36px;
+      height: 36px;
+      margin-right: 1em;
+    }
+    .nav-buttons {
+      display: flex;
+      gap: 1rem;
+    }
+    .nav-button {
+      background: transparent;
+      border: 1px solid white;
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .nav-button:hover {
+      background: white;
+      color: #1976d2;
+    }
+
+    body {
+      background: linear-gradient(120deg, #e3f0ff 0%, #f7f9fb 100%);
+      min-height: 100vh;
+      padding: 2rem;
+    }
+
+    .post-ad-container {
+      max-width: 1000px;
+      margin: 2rem auto;
+      padding: 2rem;
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 4px 24px rgba(25, 118, 210, 0.10);
+    }
+
+    .post-ad-header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .post-ad-header h1 {
+      color: #1976d2;
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .post-ad-header p {
+      color: #666;
+      font-size: 1.1rem;
+    }
+
+    .ad-type-selection {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      margin-bottom: 3rem;
+    }
+
+    .ad-type-card {
+      background: #f8f9fa;
+      border: 2px solid #e3e3e3;
+      border-radius: 12px;
+      padding: 2rem;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .ad-type-card:hover {
+      transform: translateY(-5px);
+      border-color: #1976d2;
+      box-shadow: 0 4px 12px rgba(25, 118, 210, 0.1);
+    }
+
+    .ad-type-card.selected {
+      border-color: #1976d2;
+      background: #e3f2fd;
+    }
+
+    .ad-type-card h2 {
+      color: #1976d2;
+      margin-bottom: 1rem;
+    }
+
+    .ad-type-card p {
+      color: #666;
+      margin-bottom: 1.5rem;
+    }
+
+    .ad-type-card .icon {
+      width: 64px;
+      height: 64px;
+      margin-bottom: 1rem;
+    }
+
+    .ad-form {
+      display: none;
+      padding: 2rem;
+      background: #f8f9fa;
+      border-radius: 12px;
+    }
+
+    .ad-form.active {
+      display: block;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: #333;
+      font-weight: 500;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+
+    .form-group textarea {
+      height: 100px;
+      resize: vertical;
+    }
+
+    .image-upload {
+      border: 2px dashed #ddd;
+      padding: 2rem;
+      text-align: center;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .image-upload:hover {
+      border-color: #1976d2;
+    }
+
+    .image-upload input[type="file"] {
+      display: none;
+    }
+
+    .image-preview {
+      max-width: 200px;
+      margin: 1rem auto;
+      display: none;
+    }
+
+    .submit-button {
+      background: #1976d2;
+      color: white;
+      padding: 1rem 2rem;
+      border: none;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: background 0.3s;
+      width: 100%;
+    }
+
+    .submit-button:hover {
+      background: #1565c0;
+    }
+
+    .required {
+      color: #d32f2f;
+      margin-left: 0.25rem;
+    }
+
+    .page-container {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    .post-ad-container {
+      flex-grow: 1;
+    }
+  </style>
+</head>
+<body>
+  <div class="page-container">
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="nav-brand">LuggageShare</div>
+    <div class="nav-links">
+      <a href="dashboard.html">Dashboard</a>
+      <a href="post-ad.html" class="active">Post Ad</a>
+      <a href="available-ads.html">Available Ads</a>
+      <a href="my-ads.html">My Ads</a>
+      <a href="messages.html">Messages</a>
+      <a href="profile.html">Profile</a>
+      <a href="#" id="logout">Logout</a>
+    </div>
+  </nav>
+
+  <div class="post-ad-container">
+    <div class="post-ad-header">
+      <h1>Post Your Ad</h1>
+      <p>Choose whether you have extra space or need space for your luggage</p>
+    </div>
+
+    <div class="ad-type-selection">
+      <div class="ad-type-card" onclick="selectAdType('have-space')">
+        <svg class="icon" viewBox="0 0 64 64" fill="none">
+          <rect x="8" y="20" width="48" height="32" rx="8" fill="#1976d2"/>
+          <rect x="20" y="12" width="24" height="16" rx="4" fill="#90caf9"/>
+          <circle cx="20" cy="52" r="4" fill="#fff"/>
+          <circle cx="44" cy="52" r="4" fill="#fff"/>
+        </svg>
+        <h2>Have Space</h2>
+        <p>I have extra luggage space available to share</p>
+      </div>
+
+      <div class="ad-type-card" onclick="selectAdType('need-space')">
+        <svg class="icon" viewBox="0 0 64 64" fill="none">
+          <rect x="8" y="20" width="48" height="32" rx="8" fill="#1976d2"/>
+          <rect x="20" y="12" width="24" height="16" rx="4" fill="#90caf9"/>
+          <circle cx="20" cy="52" r="4" fill="#fff"/>
+          <circle cx="44" cy="52" r="4" fill="#fff"/>
+        </svg>
+        <h2>Need Space</h2>
+        <p>I need extra space for my luggage</p>
+      </div>
+    </div>
+
+    <!-- Have Space Form -->
+    <form id="have-space-form" class="ad-form">
+      <div class="form-group">
+        <label>Flight Number<span class="required">*</span></label>
+        <input type="text" name="flightNumber" placeholder="Enter flight number" required>
+      </div>
+      <div class="form-group">
+        <label>Flight Details<span class="required">*</span></label>
+        <input type="text" name="flightDetails" placeholder="From - To" required>
+      </div>
+      <div class="form-group">
+        <label>Available Space (kg)<span class="required">*</span></label>
+        <input type="number" name="availableSpace" min="1" max="50" required>
+      </div>
+      <div class="form-group">
+        <label>Price per kg<span class="required">*</span></label>
+        <input type="number" name="pricePerKg" min="1" required>
+      </div>
+      <div class="form-group">
+        <label>Flight Date<span class="required">*</span></label>
+        <input type="date" name="flightDate" required>
+      </div>
+      <div class="form-group">
+        <label>Additional Information</label>
+        <textarea name="additionalInfo" placeholder="Any specific requirements or conditions..."></textarea>
+      </div>
+      <button type="submit" class="submit-button">Post Ad</button>
+    </form>
+
+    <!-- Need Space Form -->
+    <form id="need-space-form" class="ad-form">
+      <div class="form-group">
+        <label>Flight Number<span class="required">*</span></label>
+        <input type="text" name="flightNumber" placeholder="Enter flight number" required>
+      </div>
+      <div class="form-group">
+        <label>Flight Details<span class="required">*</span></label>
+        <input type="text" name="flightDetails" placeholder="From - To" required>
+      </div>
+      <div class="form-group">
+        <label>Required Space (kg)<span class="required">*</span></label>
+        <input type="number" name="requiredSpace" min="1" max="50" required>
+      </div>
+      <div class="form-group">
+        <label>Maximum Budget per kg<span class="required">*</span></label>
+        <input type="number" name="maxBudget" min="1" required>
+      </div>
+      <div class="form-group">
+        <label>Flight Date<span class="required">*</span></label>
+        <input type="date" name="flightDate" required>
+      </div>
+      <div class="form-group">
+        <label>Luggage Image<span class="required">*</span></label>
+        <div class="image-upload" onclick="document.getElementById('luggage-image').click()">
+          <input type="file" id="luggage-image" name="luggageImage" accept="image/*" required onchange="previewImage(this)">
+          <p>Click to upload luggage image</p>
+          <img id="image-preview" class="image-preview" alt="Luggage preview">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Additional Information</label>
+        <textarea name="additionalInfo" placeholder="Describe your luggage and any specific requirements..."></textarea>
+      </div>
+      <button type="submit" class="submit-button">Post Ad</button>
+    </form>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3>About</h3>
+        <ul>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="how-it-works.html">How It Works</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h3>Support</h3>
+        <ul>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="faq.html">FAQ</a></li>
+          <li><a href="privacy.html">Privacy Policy</a></li>
+          <li><a href="terms.html">Terms & Conditions</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h3>Connect</h3>
+        <ul>
+          <li><a href="#">Facebook</a></li>
+          <li><a href="#">Twitter</a></li>
+          <li><a href="#">Instagram</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="copyright">
+      &copy; 2024 LuggageShare. All rights reserved.
+    </div>
+  </footer>
+  </div>
+
+  <script src="js/common.js"></script>
+  <script>
+    // Check authentication and load user data
+    const token = localStorage.getItem('token');
+    if (!token) {
+      window.location.href = 'login.html';
+    }
+
+    function selectAdType(type) {
+      // Remove selected class from all cards
+      document.querySelectorAll('.ad-type-card').forEach(card => {
+        card.classList.remove('selected');
+      });
+
+      // Add selected class to clicked card
+      event.currentTarget.classList.add('selected');
+
+      // Hide all forms
+      document.querySelectorAll('.ad-form').forEach(form => {
+        form.classList.remove('active');
+      });
+
+      // Show selected form
+      document.getElementById(`${type}-form`).classList.add('active');
+    }
+
+    function previewImage(input) {
+      const preview = document.getElementById('image-preview');
+      if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          preview.src = e.target.result;
+          preview.style.display = 'block';
+        }
+        reader.readAsDataURL(input.files[0]);
+      }
+    }
+
+    // Form submission handlers
+    document.getElementById('have-space-form').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const formData = new FormData(this);
+      const adData = {
+        type: 'have-space',
+        flightNumber: formData.get('flightNumber'),
+        flightDetails: formData.get('flightDetails'),
+        availableSpace: formData.get('availableSpace'),
+        pricePerKg: formData.get('pricePerKg'),
+        flightDate: formData.get('flightDate'),
+        additionalInfo: formData.get('additionalInfo')
+      };
+
+      try {
+        const response = await fetch('/api/ads', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+          },
+          body: JSON.stringify(adData)
+        });
+
+        if (response.ok) {
+          alert('Ad posted successfully!');
+          window.location.href = 'dashboard.html';
+        } else {
+          const error = await response.json();
+          alert(error.message || 'Failed to post ad. Please try again.');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        alert('An error occurred. Please try again.');
+      }
+    });
+
+    document.getElementById('need-space-form').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const formData = new FormData(this);
+      const adData = {
+        type: 'need-space',
+        flightNumber: formData.get('flightNumber'),
+        flightDetails: formData.get('flightDetails'),
+        requiredSpace: formData.get('requiredSpace'),
+        maxBudget: formData.get('maxBudget'),
+        flightDate: formData.get('flightDate'),
+        additionalInfo: formData.get('additionalInfo')
+      };
+
+      // Handle image upload
+      const imageFile = document.getElementById('luggage-image').files[0];
+      if (imageFile) {
+        const imageData = new FormData();
+        imageData.append('image', imageFile);
+        
+        try {
+          const imageResponse = await fetch('/api/upload', {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${localStorage.getItem('token')}`
+            },
+            body: imageData
+          });
+
+          if (imageResponse.ok) {
+            const imageResult = await imageResponse.json();
+            adData.imageUrl = imageResult.url;
+          } else {
+            throw new Error('Failed to upload image');
+          }
+        } catch (error) {
+          console.error('Error uploading image:', error);
+          alert('Failed to upload image. Please try again.');
+          return;
+        }
+      }
+
+      try {
+        const response = await fetch('/api/ads', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+          },
+          body: JSON.stringify(adData)
+        });
+
+        if (response.ok) {
+          alert('Ad posted successfully!');
+          window.location.href = 'dashboard.html';
+        } else {
+          const error = await response.json();
+          alert(error.message || 'Failed to post ad. Please try again.');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        alert('An error occurred. Please try again.');
+      }
+    });
+
+    document.getElementById('logout').addEventListener('click', function(e) {
+      e.preventDefault();
+      localStorage.removeItem('token');
+      window.location.href = 'login.html';
+    });
+  </script>
+</body>
+</html> 

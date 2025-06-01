@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Profile - LuggageShare</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .profile-container {
+      max-width: 800px;
+      margin: 2rem auto;
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 4px 24px rgba(25, 118, 210, 0.10);
+      padding: 2rem 2.5rem;
+    }
+    .profile-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    .profile-header h1 {
+      color: #1976d2;
+      font-size: 2.2rem;
+      margin-bottom: 0.5rem;
+    }
+    .profile-details {
+      margin-bottom: 2rem;
+    }
+    .profile-details label {
+      font-weight: 500;
+      color: #1976d2;
+      display: block;
+      margin-top: 1.2rem;
+    }
+    .profile-details .value {
+      color: #333;
+      font-size: 1.1rem;
+      margin-top: 0.2rem;
+    }
+    .profile-rating {
+      text-align: center;
+      margin-top: 2rem;
+    }
+    .stars {
+      color: #ffc107;
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+    .rating-value {
+      color: #1976d2;
+      font-weight: bold;
+      font-size: 1.2rem;
+    }
+    .ratings-section {
+      margin-top: 3rem;
+      border-top: 1px solid #eee;
+      padding-top: 2rem;
+    }
+    .ratings-section h2 {
+      color: #1976d2;
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+    .rating-stats {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 2rem;
+    }
+    .rating-stat {
+      text-align: center;
+      margin: 0 1rem;
+    }
+    .rating-stat .value {
+      font-size: 2rem;
+      font-weight: bold;
+      color: #1976d2;
+    }
+    .rating-stat .label {
+      color: #666;
+      font-size: 0.9rem;
+    }
+    .rating-breakdown {
+      display: flex;
+      margin-bottom: 2rem;
+      flex-direction: column;
+    }
+    .rating-bar {
+      display: flex;
+      align-items: center;
+      margin-bottom: 0.5rem;
+    }
+    .rating-label {
+      width: 60px;
+      font-weight: 500;
+    }
+    .rating-progress {
+      flex: 1;
+      height: 10px;
+      background: #e0e0e0;
+      border-radius: 5px;
+      margin: 0 1rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .rating-progress-fill {
+      position: absolute;
+      height: 100%;
+      background: #ffc107;
+      left: 0;
+      top: 0;
+    }
+    .rating-count {
+      width: 40px;
+      text-align: right;
+      font-size: 0.9rem;
+      color: #666;
+    }
+    .rating-list {
+      margin-top: 2rem;
+    }
+    .rating-item {
+      padding: 1.5rem;
+      border-radius: 12px;
+      background: #f8f9fa;
+      margin-bottom: 1rem;
+      border-left: 4px solid #1976d2;
+    }
+    .rating-item-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+    }
+    .rating-item-user {
+      font-weight: 500;
+    }
+    .rating-item-date {
+      color: #666;
+      font-size: 0.9rem;
+    }
+    .rating-item-stars {
+      color: #ffc107;
+      font-size: 1.2rem;
+      margin-bottom: 0.5rem;
+    }
+    .rating-item-comment {
+      color: #333;
+      font-style: italic;
+    }
+    .no-ratings {
+      text-align: center;
+      color: #666;
+      padding: 2rem;
+      background: #f8f9fa;
+      border-radius: 12px;
+    }
+    /* Rating Modal Styles */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    .modal-content {
+      background: white;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+      max-width: 500px;
+      width: 90%;
+      position: relative;
+    }
+    
+    .modal-close {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: #666;
+    }
+    
+    .modal-stars {
+      display: flex;
+      justify-content: center;
+      margin: 2rem 0;
+    }
+    
+    .modal-star {
+      font-size: 2.5rem;
+      color: #ddd;
+      cursor: pointer;
+      margin: 0 0.3rem;
+      transition: color 0.2s;
+    }
+    
+    .modal-star:hover, .modal-star.selected {
+      color: #ffc107;
+    }
+    
+    .modal-actions {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+    
+    .submit-button {
+      flex: 1;
+      background: #1976d2;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 0.75rem 1rem;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 500;
+    }
+    
+    .cancel-button {
+      flex: 1;
+      background: #f5f5f5;
+      color: #333;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 0.75rem 1rem;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 500;
+    }
+    
+    .submit-button:hover {
+      background: #1565c0;
+    }
+    
+    .cancel-button:hover {
+      background: #e0e0e0;
+    }
+    
+    .error-message {
+      color: #d32f2f;
+      margin-top: 1rem;
+      text-align: center;
+      display: none;
+    }
+    
+    /* Form styles for the modal */
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: #333;
+    }
+    
+    textarea {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      resize: vertical;
+      font-family: inherit;
+      font-size: 1rem;
+    }
+    
+    textarea:focus {
+      outline: none;
+      border-color: #1976d2;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-brand">LuggageShare</div>
+    <div class="nav-links">
+      <a href="dashboard.html">Dashboard</a>
+      <a href="post-ad.html">Post Ad</a>
+      <a href="available-ads.html">Available Ads</a>
+      <a href="my-ads.html">My Ads</a>
+      <a href="messages.html">Messages</a>
+      <a href="profile.html" class="active">Profile</a>
+      <a href="#" id="logout">Logout</a>
+    </div>
+  </nav>
+  <div class="profile-container">
+    <div class="profile-header">
+      <h1>My Profile</h1>
+      <div id="profile-rating" class="profile-rating"></div>
+    </div>
+    <div class="profile-details">
+      <label>Name</label>
+      <div class="value" id="profile-name">Loading...</div>
+      <label>Email</label>
+      <div class="value" id="profile-email">Loading...</div>
+      <label>Phone</label>
+      <div class="value" id="profile-phone">Loading...</div>
+    </div>
+    
+    <div class="ratings-section">
+      <h2>My Ratings</h2>
+      <div id="rating-stats" class="rating-stats"></div>
+      <div id="rating-breakdown" class="rating-breakdown"></div>
+      <div id="rating-list" class="rating-list"></div>
+    </div>
+  </div>
+  <div id="rating-modal" class="modal">
+    <div class="modal-content">
+      <span class="modal-close" onclick="closeRatingModal()">&times;</span>
+      <h3>Rate <span id="rating-user-name">User</span></h3>
+      <div id="rating-stars" class="modal-stars">
+        <span class="modal-star" data-value="1">☆</span>
+        <span class="modal-star" data-value="2">☆</span>
+        <span class="modal-star" data-value="3">☆</span>
+        <span class="modal-star" data-value="4">☆</span>
+        <span class="modal-star" data-value="5">☆</span>
+      </div>
+      <div class="form-group">
+        <label for="rating-comment">Comment (optional)</label>
+        <textarea id="rating-comment" rows="4" placeholder="Write a comment about your experience"></textarea>
+      </div>
+      <div class="modal-actions">
+        <button id="submit-rating-btn" class="submit-button">Submit Rating</button>
+        <button onclick="closeRatingModal()" class="cancel-button">Cancel</button>
+      </div>
+      <div id="rating-error" class="error-message"></div>
+    </div>
+  </div>
+  <script src="js/common.js"></script>
+  <script>
+    const token = localStorage.getItem('token');
+    if (!token) {
+      window.location.href = 'login.html';
+    }
+
+    // Load user profile data
+    async function loadProfile() {
+      try {
+        const res = await fetch('/api/profile', {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        if (!res.ok) throw new Error('Failed to load profile');
+        const user = await res.json();
+
+        document.getElementById('profile-name').textContent = user.name;
+        document.getElementById('profile-email').textContent = user.email;
+        document.getElementById('profile-phone').textContent = user.phone;
+
+        // Show overall rating
+        let rating = user.rating || 0;
+        let totalRatings = user.totalRatings || 0;
+        let stars = '';
+        for (let i = 1; i <= 5; i++) {
+          stars += `<span>${i <= Math.round(rating) ? '★' : '☆'}</span>`;
+        }
+
+        document.getElementById('profile-rating').innerHTML =
+          `<div class='stars'>${stars}</div>` +
+          `<div class='rating-value'>${rating.toFixed(2)} / 5 (${totalRatings} ratings)</div>`;
+
+        // Load detailed ratings
+        loadDetailedRatings(user._id);
+      } catch (e) {
+        document.getElementById('profile-name').textContent = 'Error loading profile';
+        document.getElementById('profile-email').textContent = '';
+        document.getElementById('profile-phone').textContent = '';
+        document.getElementById('profile-rating').innerHTML = '';
+      }
+    }
+
+    // Load detailed ratings
+    async function loadDetailedRatings(userId) {
+      try {
+        // Make sure we have a valid user ID
+        if (!userId) {
+          document.getElementById('rating-stats').innerHTML = '';
+          document.getElementById('rating-breakdown').innerHTML = '';
+          document.getElementById('rating-list').innerHTML = '<div class="no-ratings">Cannot load ratings: Invalid user ID</div>';
+          return;
+        }
+        
+        const res = await fetch(`/api/users/${userId}/ratings`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        
+        if (!res.ok) {
+          throw new Error(`Failed to load ratings: ${res.status} ${res.statusText}`);
+        }
+        
+        const ratings = await res.json();
+
+        if (!ratings || ratings.length === 0) {
+          document.getElementById('rating-stats').innerHTML = '';
+          document.getElementById('rating-breakdown').innerHTML = '';
+          document.getElementById('rating-list').innerHTML = '<div class="no-ratings">No ratings yet. Ratings will appear here when other users rate you.</div>';
+          return;
+        }
+
+        // Calculate rating stats
+        const totalRatings = ratings.length;
+        let ratingSum = 0;
+        const ratingCounts = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
+
+        ratings.forEach(item => {
+          const ratingValue = Number(item.rating);
+          if (!isNaN(ratingValue) && ratingValue >= 1 && ratingValue <= 5) {
+            ratingSum += ratingValue;
+            ratingCounts[ratingValue]++;
+          }
+        });
+
+        const avgRating = totalRatings > 0 ? ratingSum / totalRatings : 0;
+
+        // Display stats
+        document.getElementById('rating-stats').innerHTML = `
+          <div class="rating-stat">
+            <div class="value">${avgRating.toFixed(1)}</div>
+            <div class="label">Average Rating</div>
+          </div>
+          <div class="rating-stat">
+            <div class="value">${totalRatings}</div>
+            <div class="label">Total Ratings</div>
+          </div>
+        `;
+
+        // Display breakdown
+        let breakdownHtml = '';
+        for (let i = 5; i >= 1; i--) {
+          const count = ratingCounts[i] || 0;
+          const percentage = totalRatings > 0 ? (count / totalRatings) * 100 : 0;
+          
+          breakdownHtml += `
+            <div class="rating-bar">
+              <div class="rating-label">${i} stars</div>
+              <div class="rating-progress">
+                <div class="rating-progress-fill" style="width: ${percentage}%"></div>
+              </div>
+              <div class="rating-count">${count}</div>
+            </div>
+          `;
+        }
+        document.getElementById('rating-breakdown').innerHTML = breakdownHtml;
+
+        // Display individual ratings
+        const ratingListHtml = ratings.map(item => {
+          const raterName = item.rater && item.rater.name ? item.rater.name : 'Anonymous User';
+          const ratingValue = Number(item.rating);
+          const stars = isNaN(ratingValue) ? '' : '★'.repeat(ratingValue) + '☆'.repeat(5-ratingValue);
+          const comment = item.comment || '';
+          const date = item.createdAt ? new Date(item.createdAt).toLocaleDateString() : 'Unknown date';
+          
+          return `
+            <div class="rating-item">
+              <div class="rating-item-header">
+                <div class="rating-item-user">${raterName}</div>
+                <div class="rating-item-date">${date}</div>
+              </div>
+              <div class="rating-item-stars">${stars}</div>
+              ${comment ? `<div class="rating-item-comment">"${comment}"</div>` : ''}
+            </div>
+          `;
+        }).join('');
+
+        document.getElementById('rating-list').innerHTML = ratingListHtml || '<div class="no-ratings">No detailed ratings available.</div>';
+        
+      } catch (e) {
+        console.error('Error loading ratings:', e);
+        document.getElementById('rating-stats').innerHTML = '';
+        document.getElementById('rating-breakdown').innerHTML = '';
+        document.getElementById('rating-list').innerHTML = `<div class="no-ratings">Error loading ratings. ${e.message}</div>`;
+      }
+    }
+
+    loadProfile();
+
+    document.getElementById('logout').addEventListener('click', function(e) {
+      e.preventDefault();
+      handleLogout();
+    });
+
+    let currentRatingUserId = null;
+    let currentRatingAdId = null;
+    let selectedRating = 0;
+
+    function openRatingModal(userId, adId, userName) {
+      currentRatingUserId = userId;
+      currentRatingAdId = adId;
+      document.getElementById('rating-user-name').textContent = userName;
+      
+      // Reset stars
+      selectedRating = 0;
+      const stars = document.querySelectorAll('.modal-star');
+      stars.forEach(star => {
+        star.textContent = '☆';
+        star.classList.remove('selected');
+      });
+      
+      // Clear comment
+      document.getElementById('rating-comment').value = '';
+      
+      // Hide error message
+      document.getElementById('rating-error').style.display = 'none';
+      
+      // Show modal
+      document.getElementById('rating-modal').style.display = 'flex';
+    }
+
+    function closeRatingModal() {
+      document.getElementById('rating-modal').style.display = 'none';
+    }
+
+    // Initialize star rating logic
+    document.addEventListener('DOMContentLoaded', function() {
+      const stars = document.querySelectorAll('.modal-star');
+      
+      // Add event listeners to stars
+      stars.forEach(star => {
+        star.addEventListener('mouseover', function() {
+          // Highlight stars up to this one
+          highlightStars(this.dataset.value);
+        });
+        
+        star.addEventListener('mouseout', function() {
+          // Revert to selected rating
+          highlightStars(selectedRating);
+        });
+        
+        star.addEventListener('click', function() {
+          selectedRating = parseInt(this.dataset.value);
+          highlightStars(selectedRating);
+        });
+      });
+      
+      // Submit rating
+      document.getElementById('submit-rating-btn').addEventListener('click', async function() {
+        if (!selectedRating) {
+          showRatingError('Please select a rating (1-5 stars)');
+          return;
+        }
+        
+        if (!currentRatingUserId || !currentRatingAdId) {
+          showRatingError('Missing user or ad information');
+          return;
+        }
+        
+        const comment = document.getElementById('rating-comment').value.trim();
+        
+        try {
+          const res = await fetch('/api/ratings', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${localStorage.getItem('token')}`
+            },
+            body: JSON.stringify({
+              rateeId: currentRatingUserId,
+              chatId: currentRatingAdId,
+              rating: selectedRating,
+              comment: comment
+            })
+          });
+          
+          const data = await res.json();
+          
+          if (res.ok) {
+            // Close modal
+            closeRatingModal();
+            
+            // Refresh users to rate
+            loadDetailedRatings(currentRatingUserId);
+            
+            // Show a success message
+            alert('Rating submitted successfully!');
+          } else {
+            showRatingError(data.error || 'Failed to submit rating');
+          }
+        } catch (e) {
+          showRatingError('Error submitting rating');
+          console.error(e);
+        }
+      });
+    });
+
+    function highlightStars(value) {
+      const stars = document.querySelectorAll('.modal-star');
+      value = parseInt(value) || 0;
+      
+      stars.forEach(star => {
+        const starValue = parseInt(star.dataset.value);
+        if (starValue <= value) {
+          star.textContent = '★';
+          star.classList.add('selected');
+        } else {
+          star.textContent = '☆';
+          star.classList.remove('selected');
+        }
+      });
+    }
+
+    function showRatingError(message) {
+      const errorElement = document.getElementById('rating-error');
+      errorElement.textContent = message;
+      errorElement.style.display = 'block';
+    }
+  </script>
+</body>
+</html> 

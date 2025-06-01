@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Experience Survey - LuggageShare</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .survey-container {
+      max-width: 500px;
+      margin: 3rem auto;
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 8px 32px rgba(25, 118, 210, 0.10);
+      padding: 2rem 2rem 1.5rem 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+    .survey-header {
+      font-size: 2rem;
+      color: #1976d2;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .form-group label {
+      color: #1976d2;
+      font-weight: 500;
+    }
+    textarea {
+      padding: 0.75rem;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+      font-size: 1rem;
+      background: #f8f9fa;
+      min-height: 100px;
+      resize: vertical;
+    }
+    .submit-btn {
+      background: #1976d2;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 0.75rem 1.5rem;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.3s;
+      margin-top: 1rem;
+    }
+    .submit-btn:hover {
+      background: #1565c0;
+    }
+    .success-message {
+      color: #2e7d32;
+      text-align: center;
+      margin-top: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="survey-container">
+    <div class="survey-header">User Experience Survey</div>
+    <form id="surveyForm">
+      <div class="form-group">
+        <label for="experience">How was your experience using LuggageShare?</label>
+        <textarea id="experience" name="experience" required></textarea>
+      </div>
+      <div class="form-group">
+        <label for="improvements">Any suggestions for improvement?</label>
+        <textarea id="improvements" name="improvements"></textarea>
+      </div>
+      <button type="submit" class="submit-btn">Submit</button>
+      <div id="survey-message"></div>
+    </form>
+  </div>
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3>About</h3>
+        <ul>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="how-it-works.html">How It Works</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h3>Support</h3>
+        <ul>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="faq.html">FAQ</a></li>
+          <li><a href="privacy.html">Privacy Policy</a></li>
+          <li><a href="terms.html">Terms & Conditions</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h3>Connect</h3>
+        <ul>
+          <li><a href="#">Facebook</a></li>
+          <li><a href="#">Twitter</a></li>
+          <li><a href="#">Instagram</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="copyright">
+      &copy; 2024 LuggageShare. All rights reserved.
+    </div>
+  </footer>
+  <script>
+    document.getElementById('surveyForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const experience = document.getElementById('experience').value.trim();
+      const improvements = document.getElementById('improvements').value.trim();
+      const feedback = { experience, improvements, date: new Date().toISOString() };
+      localStorage.setItem('luggageshare_feedback', JSON.stringify(feedback));
+      document.getElementById('survey-message').textContent = 'Thank you for your feedback! Redirecting to dashboard...';
+      document.getElementById('survey-message').className = 'success-message';
+      setTimeout(() => {
+        window.location.href = 'dashboard.html';
+      }, 1500);
+    });
+  </script>
+</body>
+</html> 

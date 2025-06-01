@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Available Ads - LuggageShare</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Navigation Styles */
+        .nav {
+            background: #1976d2;
+            color: white;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 1.5em;
+        }
+        .nav-logo {
+            width: 36px;
+            height: 36px;
+            margin-right: 1em;
+        }
+        .nav-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+        .nav-button {
+            background: transparent;
+            border: 1px solid white;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .nav-button:hover {
+            background: white;
+            color: #1976d2;
+        }
+
+        body {
+            background: linear-gradient(120deg, #e3f0ff 0%, #f7f9fb 100%);
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .section-title {
+            color: #1976d2;
+            font-size: 1.8em;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #1976d2;
+        }
+
+        .ads-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .ad-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+
+        .ad-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .ad-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .ad-content {
+            padding: 1.5rem;
+        }
+
+        .ad-title {
+            font-size: 1.2em;
+            color: #1976d2;
+            margin-bottom: 0.5rem;
+        }
+
+        .ad-details {
+            color: #666;
+            margin-bottom: 1rem;
+        }
+
+        .ad-price {
+            font-weight: bold;
+            color: #2e7d32;
+            margin-bottom: 1rem;
+        }
+
+        .ad-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .action-button {
+            flex: 1;
+            padding: 0.5rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .contact-button {
+            background: #1976d2;
+            color: white;
+        }
+
+        .contact-button:hover {
+            background: #1565c0;
+        }
+
+        .message-button {
+            background: #f5f5f5;
+            color: #333;
+        }
+
+        .message-button:hover {
+            background: #e0e0e0;
+        }
+
+        .chat-button {
+            background: #4caf50;
+            color: white;
+            text-decoration: none;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .chat-button:hover {
+            background: #388e3c;
+        }
+
+        .no-ads {
+            text-align: center;
+            color: #666;
+            padding: 2rem;
+            background: white;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+        }
+
+        .user-rating {
+            display: flex;
+            align-items: center;
+            margin-top: 0.5rem;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .rating-text {
+            margin-left: 0.5rem;
+        }
+
+        .ad-user-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 0.5rem;
+            margin-bottom: 1rem;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .ads-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-brand">LuggageShare</div>
+        <div class="nav-links">
+            <a href="dashboard.html">Dashboard</a>
+            <a href="post-ad.html">Post Ad</a>
+            <a href="available-ads.html" class="active">Available Ads</a>
+            <a href="my-ads.html">My Ads</a>
+            <a href="messages.html">Messages</a>
+            <a href="profile.html">Profile</a>
+            <a href="#" id="logout">Logout</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h2 class="section-title">Available Space</h2>
+        <div id="have-space-ads" class="ads-grid">
+            <!-- Have Space ads will be loaded here -->
+        </div>
+
+        <h2 class="section-title">Need Space</h2>
+        <div id="need-space-ads" class="ads-grid">
+            <!-- Need Space ads will be loaded here -->
+        </div>
+    </div>
+
+    <footer class="footer">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h3>About</h3>
+          <ul>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="how-it-works.html">How It Works</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h3>Support</h3>
+          <ul>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="faq.html">FAQ</a></li>
+            <li><a href="privacy.html">Privacy Policy</a></li>
+            <li><a href="terms.html">Terms & Conditions</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h3>Connect</h3>
+          <ul>
+            <li><a href="#">Facebook</a></li>
+            <li><a href="#">Twitter</a></li>
+            <li><a href="#">Instagram</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="copyright">
+        &copy; 2024 LuggageShare. All rights reserved.
+      </div>
+    </footer>
+
+    <script src="js/common.js"></script>
+    <script>
+        const token = localStorage.getItem('token');
+        if (!token) {
+            window.location.href = 'login.html';
+        }
+        let currentUserId = null;
+
+        async function getCurrentUserId() {
+            const res = await fetch('/api/profile', {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            if (res.ok) {
+                const data = await res.json();
+                return data._id || data.id || data.userId;
+            }
+            return null;
+        }
+
+        // Load ads
+        async function loadAds() {
+            try {
+                currentUserId = await getCurrentUserId();
+                const response = await fetch('/api/ads', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (response.ok) {
+                    let ads = await response.json();
+                    // Filter out user's own ads
+                    ads = ads.filter(ad => ad.userId !== currentUserId);
+                    displayAds(ads);
+                } else {
+                    throw new Error('Failed to load ads');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Failed to load ads. Please try again.');
+            }
+        }
+
+        function displayAds(ads) {
+            const haveSpaceContainer = document.getElementById('have-space-ads');
+            const needSpaceContainer = document.getElementById('need-space-ads');
+
+            // Clear existing ads
+            haveSpaceContainer.innerHTML = '';
+            needSpaceContainer.innerHTML = '';
+
+            // Separate ads by type
+            const haveSpaceAds = ads.filter(ad => ad.type === 'have-space');
+            const needSpaceAds = ads.filter(ad => ad.type === 'need-space');
+
+            // Display have space ads
+            if (haveSpaceAds.length === 0) {
+                haveSpaceContainer.innerHTML = '<div class="no-ads">No available space ads found</div>';
+            } else {
+                haveSpaceAds.forEach(ad => {
+                    haveSpaceContainer.appendChild(createAdCard(ad));
+                });
+            }
+
+            // Display need space ads
+            if (needSpaceAds.length === 0) {
+                needSpaceContainer.innerHTML = '<div class="no-ads">No need space ads found</div>';
+            } else {
+                needSpaceAds.forEach(ad => {
+                    needSpaceContainer.appendChild(createAdCard(ad));
+                });
+            }
+        }
+
+        function createAdCard(ad) {
+            const card = document.createElement('div');
+            card.className = 'ad-card';
+
+            // Fetch user details for the ad - we need name and rating
+            fetchUserDetails(ad.userId);
+
+            // Fetch user rating
+            const userRatingHtml = `<div id="user-rating-${ad.userId}" class="user-rating">Loading rating...</div>`;
+            
+            fetchUserRating(ad.userId).then(stats => {
+                const ratingElem = document.getElementById(`user-rating-${ad.userId}`);
+                if (ratingElem) {
+                    ratingElem.innerHTML = `
+                        ${generateStarRating(stats.averageRating, 'small')}
+                        <span class="rating-text">${formatRating(stats.averageRating, stats.totalRatings)}</span>
+                    `;
+                }
+            });
+
+            const content = `
+                ${ad.imageUrl ? `<img src="${ad.imageUrl}" alt="Luggage" class="ad-image">` : ''}
+                <div class="ad-content">
+                    <h3 class="ad-title">${ad.flightDetails}</h3>
+                    <div class="ad-user-info">
+                        <span>Posted by: <span id="user-name-${ad.userId}">User</span></span>
+                        ${userRatingHtml}
+                    </div>
+                    <div class="ad-details">
+                        <p>Flight Number: ${ad.flightNumber}</p>
+                        <p>Date: ${new Date(ad.flightDate).toLocaleDateString()}</p>
+                        ${ad.type === 'have-space' 
+                            ? `<p>Available Space: ${ad.availableSpace} kg</p>`
+                            : `<p>Required Space: ${ad.requiredSpace} kg</p>`
+                        }
+                    </div>
+                    <div class="ad-price">
+                        ${ad.type === 'have-space'
+                            ? `Price: ₹${ad.pricePerKg}/kg`
+                            : `Budget: ₹${ad.maxBudget}/kg`
+                        }
+                    </div>
+                    <div class="ad-actions">
+                        <button class="action-button contact-button" onclick="contactUser('${ad.userId}')">Contact</button>
+                        <button class="action-button message-button" onclick="sendMessage('${ad.userId}', '${ad._id}')">Message</button>
+                        <a href="private-chat.html?adId=${ad._id}&userId=${ad.userId}" class="action-button chat-button">Chat History</a>
+                    </div>
+                </div>
+            `;
+
+            card.innerHTML = content;
+            return card;
+        }
+
+        // Fetch user details
+        async function fetchUserDetails(userId) {
+            try {
+                const token = localStorage.getItem('token');
+                const res = await fetch(`/api/user/${userId}/contact`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                
+                if (res.ok) {
+                    const userData = await res.json();
+                    const nameElem = document.getElementById(`user-name-${userId}`);
+                    if (nameElem && userData.name) {
+                        nameElem.textContent = userData.name;
+                    }
+                }
+            } catch (e) {
+                console.error("Error fetching user details:", e);
+            }
+        }
+
+        // Load ads when page loads
+        document.addEventListener('DOMContentLoaded', loadAds);
+
+        document.getElementById('logout').addEventListener('click', function(e) {
+            e.preventDefault();
+            localStorage.removeItem('token');
+            window.location.href = 'login.html';
+        });
+    </script>
+</body>
+</html> 

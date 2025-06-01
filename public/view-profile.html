@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Profile - LuggageShare</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .profile-container {
+      max-width: 800px;
+      margin: 2rem auto;
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 4px 24px rgba(25, 118, 210, 0.10);
+      padding: 2rem 2.5rem;
+    }
+    .profile-header {
+      text-align: center;
+      margin-bottom: 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .profile-header h1 {
+      color: #1976d2;
+      font-size: 2.2rem;
+      margin-bottom: 0.5rem;
+    }
+    .user-avatar {
+      width: 100px;
+      height: 100px;
+      background: #1976d2;
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+      font-weight: bold;
+      margin-bottom: 1.5rem;
+    }
+    .profile-details {
+      margin-bottom: 2rem;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 1.5rem;
+    }
+    .profile-details label {
+      font-weight: 500;
+      color: #1976d2;
+      display: block;
+      margin-top: 1.2rem;
+    }
+    .profile-details .value {
+      color: #333;
+      font-size: 1.1rem;
+      margin-top: 0.2rem;
+    }
+    .profile-rating {
+      text-align: center;
+      margin-top: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .stars {
+      color: #ffc107;
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+    .rating-value {
+      color: #1976d2;
+      font-weight: bold;
+      font-size: 1.2rem;
+    }
+    .back-button {
+      display: inline-block;
+      padding: 0.75rem 1.5rem;
+      background: #1976d2;
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      margin-top: 1.5rem;
+      transition: background 0.3s;
+    }
+    .back-button:hover {
+      background: #1565c0;
+    }
+    .ratings-section {
+      margin-top: 2rem;
+    }
+    .ratings-section h2 {
+      color: #1976d2;
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+    .rating-item {
+      padding: 1.5rem;
+      border-radius: 12px;
+      background: #f8f9fa;
+      margin-bottom: 1rem;
+      border-left: 4px solid #1976d2;
+    }
+    .rating-item-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+    }
+    .rating-item-user {
+      font-weight: 500;
+    }
+    .rating-item-date {
+      color: #666;
+      font-size: 0.9rem;
+    }
+    .rating-item-stars {
+      color: #ffc107;
+      font-size: 1.2rem;
+      margin-bottom: 0.5rem;
+    }
+    .rating-item-comment {
+      color: #333;
+      font-style: italic;
+    }
+    .no-ratings {
+      text-align: center;
+      color: #666;
+      padding: 2rem;
+      background: #f8f9fa;
+      border-radius: 12px;
+    }
+    .error-message {
+      text-align: center;
+      color: #c62828;
+      padding: 2rem;
+      background: #ffebee;
+      border-radius: 12px;
+      margin-bottom: 1.5rem;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-brand">LuggageShare</div>
+    <div class="nav-links">
+      <a href="dashboard.html">Dashboard</a>
+      <a href="post-ad.html">Post Ad</a>
+      <a href="available-ads.html">Available Ads</a>
+      <a href="my-ads.html">My Ads</a>
+      <a href="messages.html">Messages</a>
+      <a href="profile.html">Profile</a>
+      <a href="#" id="logout">Logout</a>
+    </div>
+  </nav>
+  
+  <div class="profile-container">
+    <div id="error-container"></div>
+    
+    <div class="profile-header">
+      <div id="user-avatar" class="user-avatar">?</div>
+      <h1 id="user-name">Loading...</h1>
+      <div id="user-rating" class="profile-rating"></div>
+    </div>
+    
+    <div class="profile-details">
+      <label>Email</label>
+      <div class="value" id="user-email">Loading...</div>
+      
+      <label>Phone</label>
+      <div class="value" id="user-phone">Loading...</div>
+    </div>
+    
+    <div class="ratings-section">
+      <h2>Ratings & Reviews</h2>
+      <div id="user-ratings" class="user-ratings">
+        <div class="loading-message">Loading ratings...</div>
+      </div>
+    </div>
+    
+    <div style="text-align: center; margin-top: 2rem;">
+      <button onclick="goBack()" class="back-button">Back to Chat</button>
+    </div>
+  </div>
+  
+  <script src="js/common.js"></script>
+  <script>
+    // Check authentication
+    const token = localStorage.getItem('token');
+    if (!token) {
+      window.location.href = 'login.html';
+    }
+    
+    // Get userId from URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const userId = urlParams.get('userId');
+    
+    // Go back function
+    function goBack() {
+      window.history.back();
+    }
+    
+    // Load user profile
+    async function loadUserProfile() {
+      if (!userId) {
+        showError('Missing user ID');
+        return;
+      }
+      
+      try {
+        // Get user contact information
+        const contactRes = await fetch(`/api/user/${userId}/contact`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        
+        if (!contactRes.ok) {
+          throw new Error('Failed to load user profile');
+        }
+        
+        const userData = await contactRes.json();
+        
+        // Set user info
+        document.getElementById('user-name').textContent = userData.name || 'User';
+        document.getElementById('user-email').textContent = userData.email || 'N/A';
+        document.getElementById('user-phone').textContent = userData.phone || 'N/A';
+        
+        // Set avatar initial
+        if (userData.name) {
+          document.getElementById('user-avatar').textContent = userData.name.charAt(0).toUpperCase();
+        }
+        
+        // Get user rating stats
+        const ratingStatsRes = await fetch(`/api/users/${userId}/rating-stats`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        
+        if (ratingStatsRes.ok) {
+          const stats = await ratingStatsRes.json();
+          const rating = stats.averageRating || 0;
+          const totalRatings = stats.totalRatings || 0;
+          
+          // Display stars
+          let starsHTML = '';
+          for (let i = 1; i <= 5; i++) {
+            starsHTML += `<span>${i <= Math.round(rating) ? '★' : '☆'}</span>`;
+          }
+          
+          document.getElementById('user-rating').innerHTML = 
+            `<div class="stars">${starsHTML}</div>` +
+            `<div class="rating-value">${rating.toFixed(2)} / 5 (${totalRatings} ratings)</div>`;
+        }
+        
+        // Get user ratings
+        loadUserRatings();
+        
+      } catch (error) {
+        console.error('Error loading profile:', error);
+        showError('Failed to load user profile');
+      }
+    }
+    
+    // Load user ratings
+    async function loadUserRatings() {
+      try {
+        const ratingsRes = await fetch(`/api/users/${userId}/ratings`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        
+        if (!ratingsRes.ok) {
+          throw new Error('Failed to load ratings');
+        }
+        
+        const ratings = await ratingsRes.json();
+        const ratingsContainer = document.getElementById('user-ratings');
+        
+        if (!ratings || ratings.length === 0) {
+          ratingsContainer.innerHTML = '<div class="no-ratings">No ratings yet</div>';
+          return;
+        }
+        
+        // Display ratings
+        const ratingsHTML = ratings.map(item => {
+          const raterName = item.rater && item.rater.name ? item.rater.name : 'Anonymous User';
+          const stars = '★'.repeat(item.rating) + '☆'.repeat(5 - item.rating);
+          const comment = item.comment || '';
+          const date = item.createdAt ? new Date(item.createdAt).toLocaleDateString() : 'Unknown date';
+          
+          return `
+            <div class="rating-item">
+              <div class="rating-item-header">
+                <div class="rating-item-user">${raterName}</div>
+                <div class="rating-item-date">${date}</div>
+              </div>
+              <div class="rating-item-stars">${stars}</div>
+              ${comment ? `<div class="rating-item-comment">"${comment}"</div>` : ''}
+            </div>
+          `;
+        }).join('');
+        
+        ratingsContainer.innerHTML = ratingsHTML;
+        
+      } catch (error) {
+        console.error('Error loading ratings:', error);
+        document.getElementById('user-ratings').innerHTML = '<div class="no-ratings">Failed to load ratings</div>';
+      }
+    }
+    
+    // Show error message
+    function showError(message) {
+      const errorContainer = document.getElementById('error-container');
+      errorContainer.innerHTML = `<div class="error-message">${message}</div>`;
+    }
+    
+    // Initialize page
+    document.addEventListener('DOMContentLoaded', loadUserProfile);
+    
+    // Logout handler
+    document.getElementById('logout').addEventListener('click', function(e) {
+      e.preventDefault();
+      localStorage.removeItem('token');
+      window.location.href = 'login.html';
+    });
+  </script>
+</body>
+</html> 

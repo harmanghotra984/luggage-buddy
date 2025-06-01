@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Request Space - Luggage Space Sharing</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <h2>Request Extra Space</h2>
+    <form id="requestForm" enctype="multipart/form-data">
+      <input type="hidden" id="offerId">
+      <input type="text" id="name" placeholder="Your Name" required><br>
+      <input type="text" id="phone" placeholder="Phone" required><br>
+      <input type="text" id="aadhaar" placeholder="Aadhaar" required><br>
+      <input type="email" id="email" placeholder="Email" required><br>
+      <input type="file" id="luggageImages" multiple accept="image/*"><br>
+      <button type="submit" class="btn">Send Request</button>
+    </form>
+    <a href="dashboard.html">Back to Dashboard</a>
+    <h3>My Requests</h3>
+    <div id="myRequests"></div>
+  </div>
+  <script src="request.js"></script>
+</body>
+</html> 

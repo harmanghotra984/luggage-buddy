@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign Up - LuggageShare</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .signup-container {
+      max-width: 500px;
+      margin: 4rem auto;
+      padding: 2rem;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 24px rgba(25, 118, 210, 0.10);
+    }
+
+    .signup-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .signup-header h1 {
+      color: #1976d2;
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .signup-header p {
+      color: #666;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: #333;
+      font-weight: 500;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+
+    .checkbox-group {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .checkbox-group input[type="checkbox"] {
+      width: auto;
+    }
+
+    .checkbox-group label {
+      margin: 0;
+      font-size: 0.9rem;
+    }
+
+    .submit-button {
+      width: 100%;
+      padding: 1rem;
+      background: #1976d2;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .submit-button:hover {
+      background: #1565c0;
+    }
+
+    .login-link {
+      text-align: center;
+      margin-top: 1.5rem;
+    }
+
+    .login-link a {
+      color: #1976d2;
+      text-decoration: none;
+    }
+
+    .login-link a:hover {
+      text-decoration: underline;
+    }
+
+    .error-message {
+      color: #d32f2f;
+      text-align: center;
+      margin-bottom: 1rem;
+      display: none;
+    }
+
+    .required {
+      color: #d32f2f;
+      margin-left: 0.25rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="signup-container">
+    <div class="signup-header">
+      <h1>Create Account</h1>
+      <p>Join LuggageShare to start sharing luggage space</p>
+    </div>
+    <div id="error-message" class="error-message"></div>
+    <form id="signup-form">
+      <div class="form-group">
+        <label for="name">Full Name<span class="required">*</span></label>
+        <input type="text" id="name" name="name" required>
+      </div>
+      <div class="form-group">
+        <label for="email">Email<span class="required">*</span></label>
+        <input type="email" id="email" name="email" required>
+      </div>
+      <div class="form-group">
+        <label for="password">Password<span class="required">*</span></label>
+        <input type="password" id="password" name="password" required minlength="6">
+      </div>
+      <div class="form-group">
+        <label for="phone">Phone Number<span class="required">*</span></label>
+        <input type="tel" id="phone" name="phone" required pattern="[0-9]{10}">
+      </div>
+      <div class="form-group">
+        <label for="aadhaar">Aadhaar Number<span class="required">*</span></label>
+        <input type="text" id="aadhaar" name="aadhaar" required pattern="[0-9]{12}">
+      </div>
+      <div class="checkbox-group">
+        <input type="checkbox" id="terms" name="termsAccepted" required>
+        <label for="terms">I agree to the <a href="terms.html" target="_blank">Terms and Conditions</a> and <a href="privacy.html" target="_blank">Privacy Policy</a><span class="required">*</span></label>
+      </div>
+      <button type="submit" class="submit-button">Sign Up</button>
+    </form>
+    <div class="login-link">
+      Already have an account? <a href="login.html">Login</a>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3>About</h3>
+        <ul>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="how-it-works.html">How It Works</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h3>Support</h3>
+        <ul>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="faq.html">FAQ</a></li>
+          <li><a href="privacy.html">Privacy Policy</a></li>
+          <li><a href="terms.html">Terms & Conditions</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h3>Connect</h3>
+        <ul>
+          <li><a href="#">Facebook</a></li>
+          <li><a href="#">Twitter</a></li>
+          <li><a href="#">Instagram</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="copyright">
+      &copy; 2024 LuggageShare. All rights reserved.
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('signup-form').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const errorMessage = document.getElementById('error-message');
+      
+      try {
+        const response = await fetch('/api/signup', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            name: document.getElementById('name').value,
+            email: document.getElementById('email').value,
+            password: document.getElementById('password').value,
+            phone: document.getElementById('phone').value,
+            aadhaar: document.getElementById('aadhaar').value,
+            termsAccepted: document.getElementById('terms').checked
+          })
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          localStorage.setItem('token', data.token);
+          window.location.href = 'dashboard.html';
+        } else {
+          errorMessage.textContent = data.error || 'Signup failed. Please try again.';
+          errorMessage.style.display = 'block';
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        errorMessage.textContent = 'An error occurred. Please try again.';
+        errorMessage.style.display = 'block';
+      }
+    });
+  </script>
+</body>
+</html> 

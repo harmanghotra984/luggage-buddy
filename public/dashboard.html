@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - LuggageShare</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .dashboard-container {
+      max-width: 1200px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+
+    .dashboard-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
+
+    .welcome-message {
+      font-size: 1.5rem;
+      color: #1976d2;
+    }
+
+    .quick-actions {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .action-card {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 24px rgba(25, 118, 210, 0.10);
+      text-align: center;
+      transition: transform 0.3s;
+    }
+
+    .action-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .action-card h3 {
+      color: #1976d2;
+      margin-bottom: 1rem;
+    }
+
+    .action-card p {
+      color: #666;
+      margin-bottom: 1.5rem;
+    }
+
+    .action-button {
+      display: inline-block;
+      padding: 0.75rem 1.5rem;
+      background: #1976d2;
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      transition: background 0.3s;
+    }
+
+    .action-button:hover {
+      background: #1565c0;
+    }
+
+    .my-ads-section {
+      background: white;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 24px rgba(25, 118, 210, 0.10);
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .section-header h2 {
+      color: #1976d2;
+      font-size: 1.5rem;
+    }
+
+    .view-all {
+      color: #1976d2;
+      text-decoration: none;
+    }
+
+    .view-all:hover {
+      text-decoration: underline;
+    }
+
+    .ads-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .ad-card {
+      background: #f8f9fa;
+      padding: 1.5rem;
+      border-radius: 8px;
+      border: 1px solid #e9ecef;
+    }
+
+    .ad-card h3 {
+      color: #1976d2;
+      margin-bottom: 0.5rem;
+    }
+
+    .ad-details {
+      color: #666;
+      margin-bottom: 1rem;
+    }
+
+    .ad-details p {
+      margin: 0.25rem 0;
+    }
+
+    .ad-status {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      border-radius: 4px;
+      font-size: 0.875rem;
+      font-weight: 500;
+    }
+
+    .status-active {
+      background: #e8f5e9;
+      color: #2e7d32;
+    }
+
+    .status-matched {
+      background: #e3f2fd;
+      color: #1976d2;
+    }
+
+    .status-completed {
+      background: #f5f5f5;
+      color: #616161;
+    }
+
+    .status-cancelled {
+      background: #ffebee;
+      color: #c62828;
+    }
+
+    .no-ads {
+      text-align: center;
+      color: #666;
+      padding: 2rem;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-brand">LuggageShare</div>
+    <div class="nav-links">
+      <a href="dashboard.html" class="active">Dashboard</a>
+      <a href="post-ad.html">Post Ad</a>
+      <a href="available-ads.html">Available Ads</a>
+      <a href="my-ads.html">My Ads</a>
+      <a href="messages.html">Messages</a>
+      <a href="profile.html">Profile</a>
+      <a href="#" id="logout">Logout</a>
+    </div>
+  </nav>
+
+  
+
+  <div class="dashboard-container">
+    <div class="dashboard-header">
+      <div class="welcome-message">Welcome, <span id="user-name">User</span>!</div>
+    </div>
+
+    <div class="quick-actions">
+      <div class="action-card">
+        <h3>Have Space?</h3>
+        <p>Share your extra luggage space and earn money</p>
+        <a href="post-ad.html?type=have-space" class="action-button">Post Ad</a>
+      </div>
+      <div class="action-card">
+        <h3>Need Space?</h3>
+        <p>Find someone to carry your luggage</p>
+        <a href="post-ad.html?type=need-space" class="action-button">Post Ad</a>
+      </div>
+      <div class="action-card">
+        <h3>Browse Ads</h3>
+        <p>View all available luggage space ads</p>
+        <a href="available-ads.html" class="action-button">View Ads</a>
+      </div>
+    </div>
+
+    <div class="my-ads-section">
+      <div class="section-header">
+        <h2>My Recent Ads</h2>
+        <a href="my-ads.html" class="view-all">View All</a>
+      </div>
+      <div id="ads-container" class="ads-grid">
+        <div class="no-ads">Loading your ads...</div>
+      </div>
+    </div>
+  </div>
+  <div id="user-feedback-section"></div>
+  <script src="js/common.js"></script>
+  <script>
+    // Check authentication
+    const token = localStorage.getItem('token');
+    if (!token) {
+      window.location.href = 'login.html';
+    }
+
+    // Fetch user profile
+    let currentUserId = null; // Declare currentUserId in the script scope
+    async function fetchUserProfile() {
+      try {
+        const response = await fetch('/api/profile', {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        const data = await response.json();
+        if (response.ok) {
+          document.getElementById('user-name').textContent = data.name;
+          currentUserId = data._id; // Store the current user's ID
+        } else {
+          throw new Error(data.error);
+        }
+      } catch (error) {
+        console.error('Error fetching profile:', error);
+        window.location.href = 'login.html';
+      }
+    }
+
+    // Fetch user's ads
+    async function fetchUserAds() {
+      try {
+        const response = await fetch('/api/ads/my', {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        const data = await response.json();
+        const adsContainer = document.getElementById('ads-container');
+        
+        if (response.ok) {
+          if (data.length === 0) {
+            adsContainer.innerHTML = '<div class="no-ads">You haven\'t posted any ads yet.</div>';
+            return;
+          }
+
+          adsContainer.innerHTML = data.slice(0, 3).map(ad => `
+            <div class="ad-card">
+              <h3>${ad.type === 'have-space' ? 'Have Space' : 'Need Space'}</h3>
+              <div class="ad-details">
+                <p><strong>Flight:</strong> ${ad.flightNumber}</p>
+                <p><strong>Date:</strong> ${new Date(ad.flightDate).toLocaleDateString()}</p>
+                ${ad.type === 'have-space' 
+                  ? `<p><strong>Available Space:</strong> ${ad.availableSpace} kg</p>
+                     <p><strong>Price:</strong> ₹${ad.pricePerKg}/kg</p>`
+                  : `<p><strong>Required Space:</strong> ${ad.requiredSpace} kg</p>
+                     <p><strong>Budget:</strong> ₹${ad.maxBudget}</p>`
+                }
+              </div>
+              <span class="ad-status status-${ad.status}">${ad.status}</span>
+              ${(() => {
+                const otherUser = (ad.poster && ad.poster._id !== currentUserId) ? ad.poster : (ad.interestedUser && ad.interestedUser._id !== currentUserId) ? ad.interestedUser : null;
+                if (otherUser) {
+                  return `<a href="private-chat.html?adId=${ad._id}&userId=${otherUser._id}">Chat</a>`;
+                } else {
+                  // Handle cases where the other user is not clearly defined in the ad object
+                  // This might require fetching message data or a different approach depending on API
+                  console.warn('Other user not found for ad:', ad);
+                  return ''; // Or some other indicator
+                }
+              })()}
+            </div>
+          `).join('');
+        } else {
+          throw new Error(data.error);
+        }
+      } catch (error) {
+        console.error('Error fetching ads:', error);
+        document.getElementById('ads-container').innerHTML = 
+          '<div class="no-ads">Error loading ads. Please try again later.</div>';
+      }
+    }
+
+    // Handle logout
+    document.getElementById('logout').addEventListener('click', function(e) {
+      e.preventDefault();
+      localStorage.removeItem('token');
+      window.location.href = 'login.html';
+    });
+
+    // Show user feedback if available
+    function showUserFeedback() {
+      const feedbackSection = document.getElementById('user-feedback-section');
+      const feedback = localStorage.getItem('luggageshare_feedback');
+      if (feedback) {
+        const data = JSON.parse(feedback);
+        feedbackSection.innerHTML = `
+          <div style="background:#e8f5e9; color:#2e7d32; border-radius:10px; margin:2rem auto 0 auto; max-width:600px; padding:1.5rem; box-shadow:0 2px 8px rgba(25,118,210,0.08);">
+            <h3 style="margin-top:0;">Your Recent Feedback</h3>
+            <p><strong>Experience:</strong> ${data.experience ? data.experience : 'N/A'}</p>
+            ${data.improvements ? `<p><strong>Suggestions:</strong> ${data.improvements}</p>` : ''}
+            <p style="font-size:0.9em; color:#666;">Submitted: ${new Date(data.date).toLocaleString()}</p>
+          </div>
+        `;
+      } else {
+        feedbackSection.innerHTML = '';
+      }
+    }
+    showUserFeedback();
+
+    // Initialize dashboard
+    fetchUserProfile();
+    fetchUserAds();
+  </script>
+  
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3>About</h3>
+        <ul>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="how-it-works.html">How It Works</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h3>Support</h3>
+        <ul>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="faq.html">FAQ</a></li>
+          <li><a href="privacy.html">Privacy Policy</a></li>
+          <li><a href="terms.html">Terms & Conditions</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h3>Connect</h3>
+        <ul>
+          <li><a href="#">Facebook</a></li>
+          <li><a href="#">Twitter</a></li>
+          <li><a href="#">Instagram</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="copyright">
+      &copy; 2024 LuggageShare. All rights reserved.
+    </div>
+  </footer>
+</body>
+</html> 
